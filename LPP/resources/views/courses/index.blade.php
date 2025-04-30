@@ -46,27 +46,41 @@
             <h2 class="heading-2 mb-6">Featured Courses</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($courses->where('is_featured', true) as $course)
-                <div class="modern-card overflow-hidden fade-in">
-                    <div class="relative">
-                        @if($course->image_url)
-                            <img src="{{ $course->image_url }}" alt="{{ $course->title }}" class="w-full h-48 object-cover">
-                        @else
-                            <div class="w-full h-48 bg-neutral-100 flex items-center justify-center">
-                                <svg class="w-12 h-12 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                </svg>
+                <div class="modern-card overflow-hidden fade-in transform hover:scale-105 transition-transform duration-300">
+                    <div class="relative group">
+                        <a href="{{ route('courses.show', $course) }}" class="block">
+                            @php
+                                $courseImages = [
+                                    'web-development' => 'https://media.istockphoto.com/id/2151904502/photo/closeup-young-man-software-developers-using-computer-to-write-code-application-program-for-ai.jpg?s=1024x1024&w=is&k=20&c=Ni1sxybLm2zNGhH5zhbXnR88JLZG5Xs6Kr4LZwC_m0U=',
+                                    'data-science' => 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                    'python' => 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                    'javascript' => 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                    'mobile-development' => 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                    'cloud-computing' => 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                ];
+                                
+                                $defaultImage = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60';
+                                
+                                $courseImage = $course->image_url ?? $courseImages[strtolower($course->category ?? '')] ?? $defaultImage;
+                            @endphp
+                            
+                            <img src="{{ $courseImage }}" alt="{{ $course->title }}" 
+                                 class="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-300"
+                                 onerror="this.src='{{ $defaultImage }}'">
+                            
+                            <div class="absolute top-4 right-4">
+                                <span class="badge badge-primary">Featured</span>
                             </div>
-                        @endif
-                        <div class="absolute top-4 right-4">
-                            <span class="badge badge-primary">Featured</span>
-                        </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <h3 class="text-white font-semibold text-lg">{{ $course->title }}</h3>
+                            </div>
+                        </a>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-2">
                             <span class="badge badge-accent">{{ ucfirst($course->difficulty_level) }}</span>
                             <span class="text-sm text-neutral-600">{{ $course->duration_in_hours }} hours</span>
                         </div>
-                        <h3 class="heading-3 mb-2">{{ $course->title }}</h3>
                         <p class="text-neutral-600 mb-4">{{ Str::limit($course->description, 100) }}</p>
                         <div class="flex items-center justify-between">
                             @auth
@@ -94,24 +108,38 @@
             <h2 class="heading-2 mb-6">All Courses</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($courses->where('is_featured', false) as $course)
-                <div class="modern-card overflow-hidden slide-up">
-                    <div class="relative">
-                        @if($course->image_url)
-                            <img src="{{ $course->image_url }}" alt="{{ $course->title }}" class="w-full h-48 object-cover">
-                        @else
-                            <div class="w-full h-48 bg-neutral-100 flex items-center justify-center">
-                                <svg class="w-12 h-12 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                </svg>
+                <div class="modern-card overflow-hidden slide-up transform hover:scale-105 transition-transform duration-300">
+                    <div class="relative group">
+                        <a href="{{ route('courses.show', $course) }}" class="block">
+                            @php
+                                $courseImages = [
+                                    'web-development' => 'https://media.istockphoto.com/id/2151904502/photo/closeup-young-man-software-developers-using-computer-to-write-code-application-program-for-ai.jpg?s=1024x1024&w=is&k=20&c=Ni1sxybLm2zNGhH5zhbXnR88JLZG5Xs6Kr4LZwC_m0U=',
+                                    'data-science' => 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                    'python' => 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                    'javascript' => 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                    'mobile-development' => 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                    'cloud-computing' => 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                ];
+                                
+                                $defaultImage = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60';
+                                
+                                $courseImage = $course->image_url ?? $courseImages[strtolower($course->category ?? '')] ?? $defaultImage;
+                            @endphp
+                            
+                            <img src="{{ $courseImage }}" alt="{{ $course->title }}" 
+                                 class="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-300"
+                                 onerror="this.src='{{ $defaultImage }}'">
+                            
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <h3 class="text-white font-semibold text-lg">{{ $course->title }}</h3>
                             </div>
-                        @endif
+                        </a>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-2">
                             <span class="badge badge-accent">{{ ucfirst($course->difficulty_level) }}</span>
                             <span class="text-sm text-neutral-600">{{ $course->duration_in_hours }} hours</span>
                         </div>
-                        <h3 class="heading-3 mb-2">{{ $course->title }}</h3>
                         <p class="text-neutral-600 mb-4">{{ Str::limit($course->description, 100) }}</p>
                         <div class="flex items-center justify-between">
                             @auth
